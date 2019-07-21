@@ -12,10 +12,7 @@ const PostTemplate = props => {
   const {
     data: {
       post,
-      authornote: { html: authorNote },
-      site: {
-        siteMetadata: { facebook }
-      }
+      authornote: { html: authorNote }
     },
     pageContext: { next, prev }
   } = props;
@@ -30,14 +27,13 @@ const PostTemplate = props => {
               next={next}
               prev={prev}
               authornote={authorNote}
-              facebook={facebook}
               theme={theme}
             />
           </Article>
         )}
       </ThemeContext.Consumer>
 
-      <Seo data={post} facebook={facebook} />
+      <Seo data={post} />
     </React.Fragment>
   );
 };
@@ -55,6 +51,7 @@ export const postQuery = graphql`
     post: markdownRemark(fields: { slug: { eq: $slug } }) {
       id
       html
+      htmlAst
       fields {
         slug
         prefix
@@ -62,7 +59,7 @@ export const postQuery = graphql`
       frontmatter {
         title
         author
-        category
+        tags
         cover {
           childImageSharp {
             resize(width: 300) {
@@ -71,17 +68,16 @@ export const postQuery = graphql`
           }
         }
       }
+      parent {
+        ...on File {
+          modifiedTime(formatString: "YYYY-MM-DD")
+        }
+      }
     }
     authornote: markdownRemark(fileAbsolutePath: { regex: "/author/" }) {
       id
       html
-    }
-    site {
-      siteMetadata {
-        facebook {
-          appId
-        }
-      }
+      htmlAst
     }
   }
 `;

@@ -1,17 +1,41 @@
 import React from "react";
 import PropTypes from "prop-types";
+import rehypeReact from "rehype-react";
+import Icons from "../../components/About/WebPresenceIcons";
+import ReImg from "./ReImg";
+import ReTracedSVGGallery from "./ReTracedSVGGallery";
+import { Link } from "gatsby";
+
+const renderAst = new rehypeReact({
+  createElement: React.createElement,
+  components: { "re-icons": Icons , "re-img": ReImg , "re-link": Link, "re-tracedsvg-gallery": ReTracedSVGGallery }
+}).Compiler
 
 const Bodytext = props => {
-  const { html, theme } = props;
+  const { content, theme } = props;
+  const html = props.content.html;
 
   return (
     <React.Fragment>
-      <div className="bodytext" dangerouslySetInnerHTML={{ __html: html }} />
+
+      {/* Render markdown with Custom Components */}
+      <div className="bodytext">
+        {renderAst(content.htmlAst)}
+      </div>
 
       <style jsx>{`
         .bodytext {
           animation-name: bodytextEntry;
-          animation-duration: ${theme.time.duration.long};
+          animation-duration: 0;
+          color: ${theme.color.neutral.gray.j};
+
+          :global(blockquote) {
+            border-left: 5px solid #bbbbbb;
+            margin: 2.5em 0;
+            padding: 0em 1.1em 0em 1.3em;
+            position: relative;
+            font-style: italic;
+          }
 
           :global(h2),
           :global(h3) {
@@ -33,6 +57,7 @@ const Bodytext = props => {
             line-height: ${theme.font.lineHeight.xxl};
             margin: 0 0 1.5em;
           }
+          
           :global(ul) {
             list-style: circle;
             margin: 0 0 1.5em;
@@ -40,12 +65,19 @@ const Bodytext = props => {
           }
           :global(li) {
             margin: 0.7em 0;
-            line-height: 1.5;
+            line-height: 1.6;
+            font-size: ${theme.font.size.s};
+            list-style-type: square;
           }
           :global(a) {
             font-weight: ${theme.font.weight.bold};
             color: ${theme.color.brand.primary};
-            text-decoration: underline;
+            text-decoration: none;
+          }
+          @from-width desktop {
+            :global(a:hover) {
+              color: ${theme.color.brand.primaryDark};
+            }
           }
           :global(a.gatsby-resp-image-link) {
             border: 0;
@@ -63,22 +95,13 @@ const Bodytext = props => {
             border-radius: 0.1em;
           }
         }
-
-        @keyframes bodytextEntry {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
       `}</style>
     </React.Fragment>
   );
 };
 
 Bodytext.propTypes = {
-  html: PropTypes.string.isRequired,
+  content: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired
 };
 

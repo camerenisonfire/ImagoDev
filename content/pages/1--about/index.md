@@ -2,4 +2,4 @@
 title: About
 ---
 
-A site exploring the connectivity between the creator and creation.
+Exploring the connection between the developer and their work, especially in the realm of creative coding.

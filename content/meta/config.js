@@ -2,7 +2,7 @@ module.exports = {
   siteTitle: "Imago Dev - Reflecting The Creator", // <title>
   shortSiteTitle: "Imago Dev", // <title> ending for posts and pages
   siteDescription: "Reflecting The Creator",
-  siteUrl: "https://gatsby-starter-hero-blog.greglobinski.com",
+  siteUrl: "https://imago.dev",
   // pathPrefix: "",
   siteImage: "preview.jpg",
   siteLanguage: "en",
@@ -30,10 +30,9 @@ module.exports = {
   // gravatarImgMd5: "https://www.gravatar.com/avatar/1db853e4df386e8f699e4b35505dd8c6",
   gravatarImgMd5: "",
 
-  // social
-  authorSocialLinks: [
-    { name: "github", url: "https://github.com/camerendolecheck" },
-    { name: "twitter", url: "https://twitter.com/imagodev" },
-    { name: "facebook", url: "http://facebook.com/imagodev" }
-  ]
+  /* Contact form email destination. */
+  contactPostAddress: "",
+
+  /* Email newsletter subscription link */
+  emailSubLink: ""
 };

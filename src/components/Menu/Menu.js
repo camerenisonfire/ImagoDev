@@ -2,10 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 require("core-js/fn/array/from");
 
-import { FaHome } from "react-icons/fa/";
-import { FaSearch } from "react-icons/fa/";
-import { FaEnvelope } from "react-icons/fa/";
-import { FaTag } from "react-icons/fa/";
+import { FaHome, FaSearch, FaEnvelope, FaTag, FaUser, FaRss } from "react-icons/fa/";
 
 import Item from "./Item";
 import Expand from "./Expand";
@@ -15,19 +12,13 @@ class Menu extends React.Component {
     super(props);
     this.itemList = React.createRef();
 
-    const pages = props.pages.map(page => ({
-      to: page.node.fields.slug,
-      label: page.node.frontmatter.menuTitle
-        ? page.node.frontmatter.menuTitle
-        : page.node.frontmatter.title
-    }));
-
     this.items = [
       { to: "/", label: "Home", icon: FaHome },
-      { to: "/category/", label: "Categories", icon: FaTag },
-      { to: "/search/", label: "Search", icon: FaSearch },
-      ...pages,
-      { to: "/contact/", label: "Contact", icon: FaEnvelope }
+      //{ to: "/tags/", label: "Tags", icon: FaTag },
+      //{ to: "/search/", label: "Search", icon: FaSearch },
+      { to: "/follow/", label: "Follow", icon: FaRss },
+      { to: "/contact/", label: "Contact", icon: FaEnvelope },
+      { to: "/about/", label: "About", icon: FaUser }
     ];
 
     this.renderedItems = []; // will contain references to rendered DOM elements of menu
@@ -42,8 +33,6 @@ class Menu extends React.Component {
     path: PropTypes.string.isRequired,
     fixed: PropTypes.bool.isRequired,
     screenWidth: PropTypes.number.isRequired,
-    fontLoaded: PropTypes.bool.isRequired,
-    pages: PropTypes.array.isRequired,
     theme: PropTypes.object.isRequired
   };
 
@@ -55,8 +44,7 @@ class Menu extends React.Component {
     if (
       this.props.path !== prevProps.path ||
       this.props.fixed !== prevProps.fixed ||
-      this.props.screenWidth !== prevProps.screenWidth ||
-      this.props.fontLoaded !== prevProps.fontLoaded
+      this.props.screenWidth !== prevProps.screenWidth
     ) {
       if (this.props.path !== prevProps.path) {
         this.closeMenu();
@@ -166,12 +154,13 @@ class Menu extends React.Component {
           .menu {
             align-items: center;
             background: ${theme.color.neutral.white};
-            bottom: 0;
+            top: 0;
             display: flex;
             flex-grow: 1;
             left: 0;
             max-height: ${open ? "1000px" : "50px"};
             padding: 0 ${theme.space.inset.s};
+
             position: fixed;
             width: 100%;
             z-index: 1;
@@ -191,13 +180,14 @@ class Menu extends React.Component {
 
           @below desktop {
             .menu {
+              border-bottom: 2px solid ${theme.color.menu.border};
+
               &::after {
                 position: absolute;
                 content: "";
                 left: ${theme.space.m};
                 right: ${theme.space.m};
                 top: 0;
-                height: 1px;
                 background: ${theme.color.brand.primary};
               }
 

@@ -32,6 +32,21 @@ const queries = [
 
 module.exports = {
   // pathPrefix: config.pathPrefix,
+
+  // If you want a Search page, put this back in plugins:
+  /*
+    {
+      resolve: `gatsby-plugin-algolia`,
+      options: {
+        appId: process.env.ALGOLIA_APP_ID ? process.env.ALGOLIA_APP_ID : "",
+        apiKey: process.env.ALGOLIA_ADMIN_API_KEY ? process.env.ALGOLIA_ADMIN_API_KEY : "",
+        indexName: process.env.ALGOLIA_INDEX_NAME ? process.env.ALGOLIA_INDEX_NAME : "",
+        queries,
+        chunkSize: 10000 // default: 1000
+      }
+    },
+  */
+
   siteMetadata: {
     title: config.siteTitle,
     description: config.siteDescription,
@@ -42,28 +57,23 @@ module.exports = {
         ? process.env.ALGOLIA_SEARCH_ONLY_API_KEY
         : "",
       indexName: process.env.ALGOLIA_INDEX_NAME ? process.env.ALGOLIA_INDEX_NAME : ""
-    },
-    facebook: {
-      appId: process.env.FB_APP_ID ? process.env.FB_APP_ID : ""
     }
   },
   plugins: [
     `gatsby-plugin-styled-jsx`, // the plugin's code is inserted directly to gatsby-node.js and gatsby-ssr.js files
     `gatsby-plugin-styled-jsx-postcss`, // as above
     {
+      resolve: `gatsby-plugin-typescript`,
+      options: {
+        isTSX: true, // defaults to false
+        //jsxPragma: `jsx`, // defaults to "React" ??
+        allExtensions: true
+      },
+    },
+    {
       resolve: `gatsby-plugin-layout`,
       options: {
         component: require.resolve(`./src/layouts/`)
-      }
-    },
-    {
-      resolve: `gatsby-plugin-algolia`,
-      options: {
-        appId: process.env.ALGOLIA_APP_ID ? process.env.ALGOLIA_APP_ID : "",
-        apiKey: process.env.ALGOLIA_ADMIN_API_KEY ? process.env.ALGOLIA_ADMIN_API_KEY : "",
-        indexName: process.env.ALGOLIA_INDEX_NAME ? process.env.ALGOLIA_INDEX_NAME : "",
-        queries,
-        chunkSize: 10000 // default: 1000
       }
     },
     {
@@ -76,7 +86,7 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `${__dirname}/content/posts/`,
+        path: `${__dirname}/content/${process.env.POSTS_FOLDER || 'mock_posts'}/`,
         name: "posts"
       }
     },
@@ -98,14 +108,32 @@ module.exports = {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
+          {
+            resolve: "gatsby-remark-component-parent2div",
+            options: { components: ["re-icons", "re-img", "re-tracedsvg-gallery"] }
+          },
           `gatsby-plugin-sharp`,
           {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 800,
-              backgroundColor: "transparent"
+              backgroundColor: "transparent",
+              tracedSVG: { color: '#f9ebd2' }
             }
           },
+          {
+            resolve: `gatsby-remark-rehype-images`,
+            options: {
+              tag: 're-img',
+              maxWidth: 800,
+              quality: 90,
+              webP: true,
+              toFormat: 'WEBP',
+              tracedSVG: { color: '#f9ebd2' },
+              generateTracedSVG: true
+            }
+          },
+
           {
             resolve: `gatsby-remark-responsive-iframe`,
             options: {
@@ -141,7 +169,12 @@ module.exports = {
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     `gatsby-plugin-react-helmet`,
-    `gatsby-plugin-catch-links`,
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        trackingId: process.env.GOOGLE_ANALYTICS_ID
+      }
+    },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
@@ -190,13 +223,6 @@ module.exports = {
         ]
       }
     },
-    `gatsby-plugin-offline`,
-    {
-      resolve: `gatsby-plugin-google-analytics`,
-      options: {
-        trackingId: process.env.GOOGLE_ANALYTICS_ID
-      }
-    },
     {
       resolve: `gatsby-plugin-feed`,
       options: {
@@ -232,11 +258,8 @@ module.exports = {
                   sort: { order: DESC, fields: [fields___prefix] },
                   filter: {
                     fields: {
-                      prefix: { ne: null },
+                      prefix: { regex: "/[0-9]{4}.*/" },
                       slug: { ne: null }
-                    },
-                    frontmatter: {
-                      author: { ne: null }
                     }
                   }
                 ) {

@@ -1,26 +1,34 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "gatsby";
-
-import { FaCalendar } from "react-icons/fa/";
-import { FaUser } from "react-icons/fa/";
-import { FaTag } from "react-icons/fa/";
+import { currDate } from "../../utils/helpers";
+import { FaUser, FaTag, FaCalendar } from "react-icons/fa/";
 
 const Meta = props => {
-  const { prefix, author: authorName, category, theme } = props;
+  const { author: authorName, tags, theme, lastEdit } = props;
+  const prefix = props.prefix || currDate() /* Intent: get date placeholder for viewing drafts. */
+  
+  //TODO: lastEdit
 
   return (
     <p className="meta">
       <span>
         <FaCalendar size={18} /> {prefix}
       </span>
-      <span>
+
+      {/* <span>
         <FaUser size={18} /> {authorName}
-      </span>
-      {category && (
-        <span>
-          <FaTag size={18} />
-          <Link to={`/category/${category.split(" ").join("-")}`}>{category}</Link>
+      </span> */}
+
+      {tags && tags.map(tag => 
+        <span key={tag}>
+          
+          <Link to={`/tag/${tag.split(" ").join("-")}`}>
+            <span>
+              <FaTag size={18} />
+              {tag}
+            </span>
+          </Link>
         </span>
       )}
 
@@ -32,6 +40,7 @@ const Meta = props => {
           font-size: 0.8em;
           margin: ${theme.space.m} 0;
           background: transparent;
+          color: ${theme.color.neutral.gray.j};
 
           :global(svg) {
             fill: ${theme.icon.color};
@@ -49,15 +58,29 @@ const Meta = props => {
             margin: ${`calc(${theme.space.m} * 1.5) 0 ${theme.space.m}`};
           }
         }
+        @media (hover: hover) {
+          .meta {
+            :global(a svg) {
+              transition: all 0.5s ease-in-out;
+              -webkit-transition: all 0.5s ease-in-out;
+              -moz-transition: all 0.5s ease-in-out;
+            }
+            :global(a:hover svg) {
+              transition: all 0.5s ease-in-out;
+              -webkit-transition: all 0.5s ease-in-out;
+              -moz-transition: all 0.5s ease-in-out;
+              transform: scale(1.3);
+              color: ${theme.color.brand.primary};
+            }
+          }
+        }
       `}</style>
     </p>
   );
 };
 
 Meta.propTypes = {
-  prefix: PropTypes.string.isRequired,
-  author: PropTypes.string.isRequired,
-  category: PropTypes.string,
+  tags: PropTypes.array,
   theme: PropTypes.object.isRequired
 };
 

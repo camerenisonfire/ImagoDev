@@ -3,8 +3,11 @@ const _ = require("lodash");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const path = require("path");
 const Promise = require("bluebird");
+const fs = require('fs');
 
 const { createFilePath } = require(`gatsby-source-filesystem`);
+
+const { blogPostTeaserFields, blogPostSort } = require(`./src/fragments.js`);
 
 exports.onCreateNode = ({ node, getNode, actions }) => {
   const { createNodeField } = actions;
@@ -35,19 +38,32 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
   }
 };
 
+function createPaginationJSON(pathSuffix, pagePosts) {
+  const dir = "public/paginationJson/"
+  if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+  }
+  const filePath = dir+"index"+pathSuffix+".json";
+  const dataToSave = JSON.stringify(pagePosts);
+  fs.writeFile(filePath, dataToSave, function(err) {
+    if(err) {
+      return console.log(err);
+    }
+  }); 
+}
+
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions;
 
   return new Promise((resolve, reject) => {
     const postTemplate = path.resolve("./src/templates/PostTemplate.js");
     const pageTemplate = path.resolve("./src/templates/PageTemplate.js");
-    const categoryTemplate = path.resolve("./src/templates/CategoryTemplate.js");
-
-    // Do not create draft post files in production.
-    let activeEnv = process.env.ACTIVE_ENV || process.env.NODE_ENV || "development"
+    const tagTemplate = path.resolve("./src/templates/TagTemplate.js");
+    
+    const activeEnv = process.env.ACTIVE_ENV || process.env.NODE_ENV || "development"
     console.log(`Using environment config: '${activeEnv}'`)
+
     let filters = `filter: { fields: { slug: { ne: null } } }`;
-    if (activeEnv == "production") filters = `filter: { fields: { slug: { ne: null } , prefix: { ne: null } } }`
 
     resolve(
       graphql(
@@ -55,23 +71,9 @@ exports.createPages = ({ graphql, actions }) => {
           {
             allMarkdownRemark(
               ` + filters + `
-              sort: { fields: [fields___prefix], order: DESC }
-              limit: 1000
+              ` + blogPostSort + `
             ) {
-              edges {
-                node {
-                  id
-                  fields {
-                    slug
-                    prefix
-                    source
-                  }
-                  frontmatter {
-                    title
-                    category
-                  }
-                }
-              }
+              ` + blogPostTeaserFields + `
             }
           }
         `
@@ -81,30 +83,42 @@ exports.createPages = ({ graphql, actions }) => {
           reject(result.errors);
         }
 
-        const items = result.data.allMarkdownRemark.edges;
+        var items = result.data.allMarkdownRemark.edges;
 
-        // Create category list
-        const categorySet = new Set();
+        // Don't leak drafts into production.
+        if (activeEnv == "production") {
+          items = items.filter(item => 
+            item.node.fields.prefix &&
+            !(item.node.fields.prefix+"").startsWith("draft")
+          )
+        }
+
+        // Create tags list
+        const tagSet = new Set();
         items.forEach(edge => {
           const {
             node: {
-              frontmatter: { category }
+              frontmatter: { tags }
             }
           } = edge;
 
-          if (category && category !== null) {
-            categorySet.add(category);
+          if (tags && tags != null) {
+            tags.forEach(tag => {
+              if (tag && tag !== null) {
+                tagSet.add(tag);
+              }
+            })
           }
         });
 
-        // Create category pages
-        const categoryList = Array.from(categorySet);
-        categoryList.forEach(category => {
+        // Create tag pages
+        const tagList = Array.from(tagSet);
+        tagList.forEach(tag => {
           createPage({
-            path: `/category/${_.kebabCase(category)}/`,
-            component: categoryTemplate,
+            path: `/tag/${_.kebabCase(tag)}/`,
+            component: tagTemplate,
             context: {
-              category
+              tag
             }
           });
         });
@@ -113,8 +127,8 @@ exports.createPages = ({ graphql, actions }) => {
         const posts = items.filter(item => item.node.fields.source === "posts");
         posts.forEach(({ node }, index) => {
           const slug = node.fields.slug;
-          const next = index === 0 ? undefined : posts[index - 1].node;
-          const prev = index === posts.length - 1 ? undefined : posts[index + 1].node;
+          const prev = index === 0 ? undefined : posts[index - 1].node;
+          const next = index === posts.length - 1 ? undefined : posts[index + 1].node;
           const source = node.fields.source;
 
           createPage({
@@ -122,8 +136,8 @@ exports.createPages = ({ graphql, actions }) => {
             component: postTemplate,
             context: {
               slug,
-              prev,
               next,
+              prev,
               source
             }
           });
@@ -144,6 +158,32 @@ exports.createPages = ({ graphql, actions }) => {
             }
           });
         });
+
+        // Create "paginated homepage" == pages which list blog posts.
+        // And at the same time, create corresponding JSON for infinite scroll.
+        // Users who have JS enabled will see infinite scroll instead of pagination.
+        const postsPerPage = 10;
+        const numPages = Math.ceil(posts.length / postsPerPage);
+
+        _.times(numPages, i => {
+          const pathSuffix = (i>0 ? i+1 : "");
+
+          // Get posts for this page
+          const startInclusive = i * postsPerPage;
+          const endExclusive = startInclusive + postsPerPage;
+          const pagePosts = posts.slice(startInclusive, endExclusive)
+    
+          createPaginationJSON(pathSuffix, pagePosts);
+          createPage({
+            path: `/`+pathSuffix,
+            component: path.resolve("./src/templates/index.js"),
+            context: {
+              numPages,
+              currentPage: i + 1,
+              initialPosts: pagePosts
+            }
+          });
+        });
       })
     );
   });
@@ -157,7 +197,7 @@ exports.onCreateWebpackConfig = ({ stage, actions }, options) => {
           new BundleAnalyzerPlugin({
             analyzerMode: "static",
             reportFilename: "./report/treemap.html",
-            openAnalyzer: true,
+            openAnalyzer: false,
             logLevel: "error",
             defaultSizes: "gzip"
           })

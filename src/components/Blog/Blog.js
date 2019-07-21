@@ -1,23 +1,24 @@
 import PropTypes from "prop-types";
 import React from "react";
 
-import Item from "./Item";
+import Teaser from "./Teaser";
 
 const Blog = props => {
-  const { posts, theme } = props;
+  const posts = props.posts;
+  const theme = props.theme;
 
   return (
     <React.Fragment>
       <main className="main">
         <ul>
-          {posts.map(post => {
+          {posts.map((post,index) => {
             const {
               node,
               node: {
                 fields: { slug }
               }
             } = post;
-            return <Item key={slug} post={node} theme={theme} />;
+            return <Teaser key={slug} post={node} theme={theme} index={index} />;
           })}
         </ul>
       </main>
@@ -45,6 +46,11 @@ const Blog = props => {
         @above desktop {
           ul {
             max-width: ${theme.text.maxWidth.desktop};
+          }
+        }
+        @below desktop {
+          ul {
+            padding-top: 10px;
           }
         }
       `}</style>

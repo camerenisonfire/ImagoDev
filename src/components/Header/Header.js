@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import VisibilitySensor from "react-visibility-sensor";
 
-import { ScreenWidthContext, FontLoadedContext } from "../../layouts";
+import { ScreenWidthContext } from "../../layouts";
 import config from "../../../content/meta/config";
 import Menu from "../Menu";
 
@@ -25,18 +25,17 @@ class Header extends React.Component {
   getHeaderSize = () => {
     const fixed = this.state.fixed ? "fixed" : "";
     const homepage = this.props.path === "/" ? "homepage" : "";
-
-    return `${fixed} ${homepage}`;
+    return "fixed"; // `${fixed} ${homepage}` (Change me if you want a more "lively" navbar)
   };
 
   render() {
-    const { pages, path, theme } = this.props;
+    const { path, theme } = this.props;
     const { fixed } = this.state;
 
     return (
       <React.Fragment>
         <header className={`header ${this.getHeaderSize()}`}>
-          <Link to="/" className="logoType">
+          <Link to="/about" className="logoType">
             <div className="logo">
               <img src={config.gravatarImgMd5=="" ? avatar : config.gravatarImgMd5 } alt={config.siteTitle} />
             </div>
@@ -45,22 +44,16 @@ class Header extends React.Component {
               <h2>{config.headerSubTitle}</h2>
             </div>
           </Link>
-          <FontLoadedContext.Consumer>
-            {loaded => (
-              <ScreenWidthContext.Consumer>
-                {width => (
-                  <Menu
-                    path={path}
-                    fixed={fixed}
-                    screenWidth={width}
-                    fontLoaded={loaded}
-                    pages={pages}
-                    theme={theme}
-                  />
-                )}
-              </ScreenWidthContext.Consumer>
-            )}
-          </FontLoadedContext.Consumer>
+            <ScreenWidthContext.Consumer>
+              {width => (
+                <Menu
+                  path={path}
+                  fixed={fixed}
+                  screenWidth={width}
+                  theme={theme}
+                />
+              )}
+            </ScreenWidthContext.Consumer>
         </header>
         <VisibilitySensor onChange={this.visibilitySensorChange}>
           <div className="sensor" />
@@ -69,6 +62,7 @@ class Header extends React.Component {
         {/* --- STYLES --- */}
         <style jsx>{`
           .header {
+            padding-bottom: 0px !important;
             align-items: center;
             justify-content: center;
             background-color: ${theme.color.neutral.white};
@@ -111,7 +105,7 @@ class Header extends React.Component {
           }
 
           .logo {
-            border-radius: 65% 75%;
+            border-radius: ${theme.size.radius.small};
             border: 1px solid #eee;
             display: inline-block;
             height: 44px;
@@ -152,6 +146,9 @@ class Header extends React.Component {
           }
 
           @below desktop {
+            :global(a.logoType) {
+              visibility: hidden;
+            }
             .header.homepage {
               .logo {
                 border: none;
@@ -177,6 +174,7 @@ class Header extends React.Component {
               width: 100%;
               justify-content: space-between;
               transition: padding 0.5s;
+              border-bottom: 2px solid ${theme.color.menu.border};
 
               &.fixed {
                 height: ${theme.header.height.fixed};
@@ -249,7 +247,6 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  pages: PropTypes.array.isRequired,
   path: PropTypes.string.isRequired,
   theme: PropTypes.object.isRequired
 };

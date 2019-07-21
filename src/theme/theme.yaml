@@ -38,6 +38,8 @@ size:
 # COLOR
 color:
   # color options
+  menu:
+    border: ghostwhite;
   neutral:
     white: &color-white "#ffffff"
     gray:
@@ -50,18 +52,22 @@ color:
       g: "#969492"
       h: "#706e6b"
       i: "#514f4d"
-      j: &color-gray-10 "#3e3e3c"
+      j: &color-gray-10 "#666" #'#3e3e3c'
       k: "#2b2826"
     black: "#000000"
+
   brand:
-    primary: &color-brand-primary "#5D36B1"
+    primary: &color-brand-primary "#5D36B1" #'#07889B' #'#C0B283' #'#856084' #'#616247'
+    primaryLight: "#5D36B1"
+    primaryDark: "#5D36B1"
+    hover: &color-brand-hover "#C09F80" #'#E37222' #'#DCD0C0' #'#9f7a9d'
     primaryActive: "#5D36B1"
     light: "#5D36B1"
     lightActive: "#5D36B1"
     dark: "#5D36B1"
     darkActive: "#5D36B1"
   special:
-    attention: &color-special-attention "#FF6542"
+    attention: &color-special-attention "#FF6542" #'#76323F' #'#E37222' #'#C0B283' #'#624761'
 # FONT
 font:
   # font options
@@ -130,6 +136,7 @@ icon:
 
 # COMPONENT TOKENS
 hero:
+  hide: true
   h1:
     size: *font-size-xxl
     color: *color-white
@@ -139,9 +146,9 @@ blog:
   h1:
     size: *font-size-l
     lineHeight: *font-line-height-xs
-    hoverColor: *color-brand-primary
+    hoverColor: *color-gray-10
 header:
   height:
-    default: 80px
+    default: 50px
     fixed: 50px;
-    homepage: 100px;
+    homepage: 50px;
