@@ -3,7 +3,7 @@
 [Imago Dev](https://www.imago.dev/), is a website and blog, run by Cameren Dolecheck, exploring the connection between the developer and their work, especially in the realm of creative coding.
 <br /><br />
 
-Thanks to [Greg Globinski](https://www.greglobinski.com) for the creation of the GatsbyJS Hero Starter Blog, which this site was created from.
+This site was built with [GatsbyJs](https://www.gatsbyjs.org). Thanks to [Greg Globinski](https://www.greglobinski.com) for the creation of the GatsbyJS Hero Starter Blog, which this site was created from.
 
 ## Licence
 
