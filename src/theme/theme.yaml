@@ -57,17 +57,17 @@ color:
     black: "#000000"
 
   brand:
-    primary: &color-brand-primary "#5D36B1" #'#07889B' #'#C0B283' #'#856084' #'#616247'
+    primary: &color-brand-primary "#5D36B1"
     primaryLight: "#5D36B1"
     primaryDark: "#5D36B1"
-    hover: &color-brand-hover "#C09F80" #'#E37222' #'#DCD0C0' #'#9f7a9d'
+    hover: &color-brand-hover "#94B9AF"
     primaryActive: "#5D36B1"
-    light: "#5D36B1"
-    lightActive: "#5D36B1"
-    dark: "#5D36B1"
-    darkActive: "#5D36B1"
+    light: "#E8DAB2"
+    lightActive: "#E8DAB2"
+    dark: "#2D3142"
+    darkActive: "#2D3142"
   special:
-    attention: &color-special-attention "#FF6542" #'#76323F' #'#E37222' #'#C0B283' #'#624761'
+    attention: &color-special-attention "#FF6542"
 # FONT
 font:
   # font options

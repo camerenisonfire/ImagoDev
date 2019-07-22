@@ -68,7 +68,7 @@ module.exports = {
         isTSX: true, // defaults to false
         //jsxPragma: `jsx`, // defaults to "React" ??
         allExtensions: true
-      },
+      }
     },
     {
       resolve: `gatsby-plugin-layout`,
@@ -86,7 +86,7 @@ module.exports = {
     {
       resolve: `gatsby-source-filesystem`,
       options: {
-        path: `${__dirname}/content/${process.env.POSTS_FOLDER || 'mock_posts'}/`,
+        path: `${__dirname}/content/${process.env.POSTS_FOLDER || "mock_posts"}/`,
         name: "posts"
       }
     },
@@ -118,18 +118,18 @@ module.exports = {
             options: {
               maxWidth: 800,
               backgroundColor: "transparent",
-              tracedSVG: { color: '#f9ebd2' }
+              tracedSVG: { color: "#2D3142" }
             }
           },
           {
             resolve: `gatsby-remark-rehype-images`,
             options: {
-              tag: 're-img',
+              tag: "re-img",
               maxWidth: 800,
               quality: 90,
               webP: true,
-              toFormat: 'WEBP',
-              tracedSVG: { color: '#f9ebd2' },
+              toFormat: "WEBP",
+              tracedSVG: { color: "#2D3142" },
               generateTracedSVG: true
             }
           },

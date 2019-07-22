@@ -1,7 +1,7 @@
 {
-  "name": "@baobabkoodaa/blog",
-  "version": "0.9.0",
-  "author": "Baobab Koodaa",
+  "name": "@camerenisonfire/imagodev",
+  "version": "0.1.0",
+  "author": "Cameren Dolecheck",
   "license": "MIT",
   "dependencies": {
     "fontfaceobserver": "^2.0.13",

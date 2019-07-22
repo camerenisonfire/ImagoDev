@@ -21,7 +21,7 @@ const blogPostTeaserFields = `
                 cover {
                     children {
                         ... on ImageSharp {
-                            fluid(maxWidth: 800, maxHeight: 360, cropFocus: CENTER, quality: 90, traceSVG: { color: "#f9ebd2" }) {
+                            fluid(maxWidth: 800, maxHeight: 360, cropFocus: CENTER, quality: 90, traceSVG: { color: "#2D3142" }) {
                                 tracedSVG
                                 aspectRatio
                                 src
@@ -36,13 +36,13 @@ const blogPostTeaserFields = `
             }
         }
     }
-`
+`;
 
 const blogPostSort = `
     sort: { fields: [fields___prefix, fields___slug] order: DESC }
-`
+`;
 
 module.exports = {
-    blogPostTeaserFields: blogPostTeaserFields,
-    blogPostSort: blogPostSort
+  blogPostTeaserFields: blogPostTeaserFields,
+  blogPostSort: blogPostSort
 };
