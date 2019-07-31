@@ -5,30 +5,33 @@ import theme from "../theme/theme.yaml";
 import Article from "../components/Article";
 import Headline from "../components/Article/Headline";
 import Seo from "../components/Seo";
-import { FaTag , FaRss , FaPaperPlane } from "react-icons/fa";
+import { FaTwitter, FaRss } from "react-icons/fa";
 import config from "../../content/meta/config";
 
 const FollowPage = props => {
-
   return (
     <React.Fragment>
       <Article theme={theme}>
         <header>
           <Headline title="Follow" theme={theme} />
         </header>
-        <p>Hear about new posts by either RSS or Email.</p>
+        <p>Hear about new posts by RSS and Twitter.</p>
 
         <a href="../rss.xml" target="_blank">
           <section className="subContainer">
-              <span className="subIcon"><FaRss/></span>
-              <span className="subText">RSS</span>
+            <span className="subIcon">
+              <FaRss />
+            </span>
+            <span className="subText">RSS</span>
           </section>
         </a>
 
-        <a href={config.emailSubLink} target="_blank">
+        <a href={config.authorTwitterAccountURL} target="_blank">
           <section className="subContainer">
-            <span className="subIcon"><FaPaperPlane/></span>
-            <span className="subText">Email</span>
+            <span className="subIcon">
+              <FaTwitter />
+            </span>
+            <span className="subText">Twitter</span>
           </section>
         </a>
 
@@ -55,30 +58,28 @@ const FollowPage = props => {
               }
             }
           }
-        
+
           .subText {
-              text-align: right;
-              font-size: 20px;
-              color: ${theme.color.neutral.gray.j};
+            text-align: right;
+            font-size: 20px;
+            color: ${theme.color.neutral.gray.j};
           }
-          
+
           .subIcon {
-              vertical-align: middle;
-              font-size: 40px;
-              padding-right: 10px;
-              :global(svg) {
-                fill: ${theme.color.brand.primary};
-              }
+            vertical-align: middle;
+            font-size: 40px;
+            padding-right: 10px;
+            :global(svg) {
+              fill: ${theme.color.brand.primary};
+            }
           }
         `}</style>
       </Article>
-      <Seo pageTitle="Follow"/>
+      <Seo pageTitle="Follow" />
     </React.Fragment>
-    
   );
 };
 
-FollowPage.propTypes = {
-};
+FollowPage.propTypes = {};
 
 export default FollowPage;

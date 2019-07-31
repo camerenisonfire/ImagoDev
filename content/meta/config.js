@@ -10,6 +10,7 @@ module.exports = {
   /* author */
   authorName: "Imago Dev",
   authorTwitterAccount: "ImagoDev",
+  authorTwitterAccountURL: "https://twitter.com/ImagoDev_",
 
   /* info */
   headerTitle: "Imago Dev",
@@ -31,7 +32,8 @@ module.exports = {
   gravatarImgMd5: "",
 
   /* Contact form email destination. */
-  contactPostAddress: "",
+  contactPostAddress:
+    "https://script.google.com/macros/s/AKfycbxWlLy69PGXYewzTdGuiQwB9q8d9oMR4jGddeUkAA/exec",
 
   /* Email newsletter subscription link */
   emailSubLink: ""
