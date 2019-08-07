@@ -12,7 +12,7 @@ author: cameren dolecheck
     >
 </re-img>
 
-It's the begining of a new medium. It's the begining of a new space. It's the begining of new learning. It's the begining of a new season. It's the begining of Imago Dev.<br>
+It's the beginning of a new medium. It's the begining of a new space. It's the begining of new learning. It's the begining of a new season. It's the begining of Imago Dev.<br>
 
 ###Creation
 What goes into creating? There is usually some sort of medium for which the creation will be made on or out of. Tools are often required for the craft. There is also something that must go into it on a personal level. More than just the time to make it, there is an personal touch the creation recieves. Software is the same as any other creations, only more so. No medium before exploded, evolved, and encompassed the world as software has done in less than a century.
