@@ -32,10 +32,10 @@ This list is certainly not exhaustive of cool REST APIs, but simply some I find 
   4. [TransLoc OpenAPI](https://rapidapi.com/transloc/api/openapi-1-2) Get live data of public transportation of cities and college campuses.
   5. [Urban Dictionary API](https://www.urbandictionary.com/define.php?term=API) It’s amazing what slang people come up with. 
   6. [Merriam-Webster Dictionary API](https://dictionaryapi.com) For those that want real words’ definitions and synonyms. 
-  7. [Numbers API](http://numbersapi.com)Interesting facts and trivia on numbers.
+  7. [Numbers API](http://numbersapi.com) Interesting facts and trivia on numbers.
   8. [WeatherBit API](https://www.weatherbit.io/api) Current and historical weather data.  
   9.  [US Government Data API](https://www.data.gov/developers/apis) A fairly big catch-all for dozens of United State data samples such as agriculture, health, and public safety.
-  10. [Bible API](https://scripture.api.bible) - The best selling book of all time. The greatest story ever told.
+  10. [Bible API](https://scripture.api.bible) The best selling book of all time. The greatest story ever told.
 
 
 ###What To Do With Them
