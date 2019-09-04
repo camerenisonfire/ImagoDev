@@ -30,7 +30,7 @@ This list is certainly not exhaustive of cool REST APIs, but simply some I find 
   2. [NASA API](https://api.nasa.gov/index.html) Space, the final frontier. Get data on astroids, galaxies, and more. 
   3. [Open Food Facts](https://world.openfoodfacts.org/data) A huge amount of data on food products from around the world.
   4. [TransLoc OpenAPI](https://rapidapi.com/transloc/api/openapi-1-2) Get live data of public transportation of cities and college campuses.
-  5. [Urban Dictionary API](https://www.urbandictionary.com/define.php?term=API) It’s amazing what slang people come up with. 
+  5. [Urban Dictionary API](https://rapidapi.com/community/api/urban-dictionary) It’s amazing what slang people come up with. 
   6. [Merriam-Webster Dictionary API](https://dictionaryapi.com) For those that want real words’ definitions and synonyms. 
   7. [Numbers API](http://numbersapi.com) Interesting facts and trivia on numbers.
   8. [WeatherBit API](https://www.weatherbit.io/api) Current and historical weather data.  
